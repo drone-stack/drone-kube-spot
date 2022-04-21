@@ -20,7 +20,7 @@ ARG CGO_ENABLED=0
 
 WORKDIR /go/src/cmd
 
-RUN go build -o release/linux/amd64/plugin
+RUN go build -o /go/src/release/linux/amd64/plugin
 
 FROM ysicing/debian
 
