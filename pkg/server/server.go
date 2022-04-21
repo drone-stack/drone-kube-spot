@@ -22,7 +22,7 @@ func Serve(ctx context.Context) error {
 	g.Use(gin.Logger())
 	g.Use(gin.Recovery())
 	g.GET("/metrics", gin.WrapH(promhttp.Handler()))
-	cron.Cron.Add("0 20,50 8-12,13-18,20-23 * * *", func() {
+	cron.Cron.Add("20,50 8-12,13-18,20-23 * * *", func() {
 		holiday := ztime.HolidayGet(ztime.GetToday())
 		if holiday.NeedWork {
 			logrus.Infof("Today is %s, need work", holiday.Name)
