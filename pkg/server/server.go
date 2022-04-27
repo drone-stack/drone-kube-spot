@@ -31,11 +31,9 @@ func Serve(ctx context.Context) error {
 			logrus.Infof("Today is %s, no need work", holiday.Name)
 		}
 	})
-	cron.Cron.Add("0 30 0,9-23 * * *", func() {
-		holiday := ztime.HolidayGet(ztime.GetToday())
-		if holiday.NeedWork {
-			k8s.Clean()
-		}
+	cron.Cron.Add("0,30 0,9-23 * * *", func() {
+		logrus.Info("try clean pods")
+		k8s.Clean()
 	})
 	addr := "0.0.0.0:65001"
 	srv := &http.Server{
