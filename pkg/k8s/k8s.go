@@ -6,6 +6,7 @@ import (
 
 	"github.com/drone-stack/drone-kube-spot/internal/kube"
 	"github.com/ergoapi/util/environ"
+	"github.com/ergoapi/util/ztime"
 	"github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -25,6 +26,13 @@ func init() {
 }
 
 func Pods() {
+	holiday := ztime.HolidayGet(ztime.GetToday())
+	if holiday.NeedWork {
+		logrus.Infof("Today is %s, need work", holiday.Name)
+	} else {
+		logrus.Infof("Today is %s, no need work", holiday.Name)
+		return
+	}
 	label := environ.GetEnv("label", "pool=spot")
 	labels := strings.Split(label, "=")
 	if len(labels) != 2 {
