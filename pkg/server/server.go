@@ -22,7 +22,7 @@ func Serve(ctx context.Context) error {
 	g.Use(gin.Logger())
 	g.Use(gin.Recovery())
 	g.GET("/metrics", gin.WrapH(promhttp.Handler()))
-	cron.Cron.Add("20,50 8-12,13-19 * * *", func() {
+	cron.Cron.Add("20 8 * * *", func() {
 		holiday := ztime.HolidayGet(ztime.GetToday())
 		if holiday.NeedWork {
 			logrus.Infof("Today is %s, need work", holiday.Name)
@@ -31,7 +31,7 @@ func Serve(ctx context.Context) error {
 			logrus.Infof("Today is %s, no need work", holiday.Name)
 		}
 	})
-	cron.Cron.Add("0,30 0,9-23 * * *", func() {
+	cron.Cron.Add("0 18 * * *", func() {
 		logrus.Info("try clean pods")
 		k8s.Clean()
 	})
